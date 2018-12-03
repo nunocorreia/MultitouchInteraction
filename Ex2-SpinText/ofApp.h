@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofxiOS.h"
+#include "ofxiOSCoreMotion.h"
 
 class ofApp : public ofxiOSApp{
 	
@@ -21,11 +22,12 @@ class ofApp : public ofxiOSApp{
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
     
-    //1. Create a new object of class ofTrueTypeFont. This object can have any name you want
-    ofTrueTypeFont myFont;
-    string myText;
+    ofxiOSCoreMotion coreMotion;
+
+    ofTrueTypeFont myPrettyFont;
     float centerX, centerY;
-    float angleX, angleY, angleZ;
+    string myText;
+    ofVec3f angle;
 
 };
 

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ofxiOS.h"
+#define NUM_SQUARES 20
 
-#define NUM_SQUARES 10
-
-class ofApp : public ofxiOSApp{
+class ofApp : public ofxiOSApp {
 	
     public:
         void setup();
@@ -22,10 +21,9 @@ class ofApp : public ofxiOSApp{
         void gotFocus();
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
-
-    ofPoint squarePoint[NUM_SQUARES];
-    ofVec2f speed[NUM_SQUARES];
     
+    ofPoint squarePoint[NUM_SQUARES];
+    ofVec2f speedVector[NUM_SQUARES];
 };
 
 

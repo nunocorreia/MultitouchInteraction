@@ -1,44 +1,32 @@
 #include "ofApp.h"
-//--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetBackgroundColor(0);
+    //ENVIRONMENT
+    ofBackground(0);
     ofSetRectMode(OF_RECTMODE_CENTER);
+    //VARIABLES
+    float speedMax = 4;
     for(int i=0;i<NUM_SQUARES;i++){
-        squarePoint[i].set(ofRandomWidth(),ofRandomHeight());
-        speed[i].set(ofRandom(-5,5),ofRandom(-5,5));
+        squarePoint[i].set(ofRandomWidth(), ofRandomHeight());
+        speedVector[i].set(ofRandom(-speedMax, speedMax),ofRandom(-speedMax,speedMax));
     }
 }
-//--------------------------------------------------------------
 void ofApp::update(){
     for(int i=0;i<NUM_SQUARES;i++){
-        if(squarePoint[i].x<0 || squarePoint[i].x>ofGetWidth()){
-            speed[i].x*=-1;
-        }
-        if(squarePoint[i].y<0 || squarePoint[i].y>ofGetHeight()){
-            speed[i].y*=-1;
-        }
-        squarePoint[i]+=speed[i];
+        squarePoint[i]+=speedVector[i];
+        if(squarePoint[i].x<0||squarePoint[i].x>ofGetWidth()) speedVector[i].x*=-1;
+        if(squarePoint[i].y<0||squarePoint[i].y>ofGetHeight()) speedVector[i].y*=-1;
     }
 }
-//--------------------------------------------------------------
 void ofApp::draw(){
+    ofSetColor(0,255,0,127);
     for(int i=0;i<NUM_SQUARES;i++){
-        ofSetColor(0, 255, 0, 127);
-        ofDrawRectangle(squarePoint[i], 100, 100);
-        ofSetColor(255);
-        ofDrawBitmapString(i, squarePoint[i]);
+        ofDrawRectangle(squarePoint[i], 50, 50);
     }
 }
-//--------------------------------------------------------------
-void ofApp::exit(){
-}
-
-//--------------------------------------------------------------
+void ofApp::exit(){}
 void ofApp::touchDown(ofTouchEventArgs & touch){
     squarePoint[touch.id]=touch;
 }
-
-//--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
     squarePoint[touch.id]=touch;
 }
@@ -77,4 +65,3 @@ void ofApp::gotMemoryWarning(){
 void ofApp::deviceOrientationChanged(int newOrientation){
     
 }
-
