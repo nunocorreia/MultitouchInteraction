@@ -1,113 +1,68 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){	
-	ofSetOrientation(OF_ORIENTATION_90_RIGHT);//Set iOS to Orientation Landscape Right
-	
-	w = 250;
-	h = 200;
-	
-	texGray.allocate(w,h,GL_LUMINANCE);
-	texColor.allocate(w,h,GL_RGB);
-	texColorAlpha.allocate(w,h,GL_RGBA);
-	
-	grayPixels			= new unsigned char [w*h];
-	colorPixels 		= new unsigned char [w*h*3];
-	colorAlphaPixels	= new unsigned char [w*h*4];
-
-
-	// gray pixels, set them randomly
-	for (int i = 0; i < w*h; i++){
-		grayPixels[i] = (unsigned char)(ofRandomuf() * 255);
-		
-	}
-	
-	// color pixels, use w and h to control red and green
-	for (int i = 0; i < w; i++){
-		for (int j = 0; j < h; j++){
-			colorPixels[(j*w+i)*3 + 0] = i;	// r
-			colorPixels[(j*w+i)*3 + 1] = j;	// g
-			colorPixels[(j*w+i)*3 + 2] = 0; // b
-		}
-	}
-	
-	// color alpha pixels, use w and h to control red and green
-	for (int i = 0; i < w; i++){
-		for (int j = 0; j < h; j++){
-			colorAlphaPixels[(j*w+i)*4 + 0] = 255;	// r
-			colorAlphaPixels[(j*w+i)*4 + 1] = 133;	// g
-			colorAlphaPixels[(j*w+i)*4 + 2] = 200; 	// b
-			colorAlphaPixels[(j*w+i)*4 + 3] = i; 	// alpha
-		}
-	}
-	
-	
-	texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
-	texColor.loadData(colorPixels, w,h, GL_RGB);
-	texColorAlpha.loadData(colorAlphaPixels, w,h, GL_RGBA);
-
+void ofApp::setup(){
+    //TEXTURE CODE
+    w = ofGetWidth();
+    h = ofGetHeight();
+    texColor.allocate(w,h,GL_RGB);
+    colorPixels         = new unsigned char [w*h*3];
 }
-
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	
-	ofBackground(255,255,255);
-	
-	for (int i = 0; i < w; i++){
-		for (int j = 0; j < h; j++){
-			grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
-		}
-	}
-	texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
-	
+    //TEXTURE CODE
+    // color pixels, use w and h to control red and green
+    for (int i = 0; i < w; i++){
+        for (int j = 0; j < h; j++){
+            colorPixels[(j*w+i)*3 + 0] = ofMap(i,0,w,0,255);    // r
+            colorPixels[(j*w+i)*3 + 1] = ofMap(touchPoint.y,0,h,0,255);    // g
+            colorPixels[(j*w+i)*3 + 2] = ofMap(touchPoint.x,0,w,0,255); // b
+        }
+    }
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
-	ofScale(0.6, 0.6, 1.0);
-
-	ofSetHexColor(0xffffff);
-	
-	texGray.draw(100,100,w,h);
-	texColor.draw(350,300,w,h);
-	
-	// 	blending had to be enabled 
-	// 	for transparency to work:
-
-	ofEnableAlphaBlending();
-	texColorAlpha.draw(250,200,w,h);
-	ofDisableAlphaBlending();
-	
+    //TEXTURE CODE
+    texColor.loadData(colorPixels, w,h, GL_RGB);
+    texColor.draw(0,0,w,h);
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
+    int x=touch.x;
+    int y=touch.y;
+    float red=colorPixels[w*y*3+x*3];
+    float green=colorPixels[w*y*3+x*3+1];
+    float blue=colorPixels[w*y*3+x*3+2];
+
+    cout << "R:" << red << " G:"<< green << " B:" << blue << endl;
+
+    //HEX CONVERSION
+    std::stringstream stringRed;
+    stringRed << std::hex << red; // int decimal_value
+    std::string redHex ( stringRed.str() );
+    std::stringstream stringGreen;
+    stringGreen << std::hex << green; // int decimal_value
+    std::string greenHex ( stringGreen.str() );
+    std::stringstream stringBlue;
+    stringBlue << std::hex << blue; // int decimal_value
+    std::string blueHex ( stringBlue.str() );
+    cout << "R:" << redHex << " G:"<< greenHex << " B:" << blueHex << endl;
 
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
-
-	// when the mouse moves, we change the color image:
-	float pct = (float)touch.x / (float)ofGetWidth();
-	for (int i = 0; i < w; i++){
-		for (int j = 0; j < h; j++){
-			colorPixels[(j*w+i)*3 + 0] = i;	// r
-			colorPixels[(j*w+i)*3 + 1] = j;	// g
-			colorPixels[(j*w+i)*3 + 2] = (unsigned char)(pct*255); // b
-		}
-	}
-
-	// finally, load those pixels into the texture
-	texColor.loadData(colorPixels, w,h, GL_RGB);
-
+    //TEXTURE CODE
+    touchPoint=touch;
 }
 
 //--------------------------------------------------------------
@@ -122,26 +77,26 @@ void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchCancelled(ofTouchEventArgs & touch){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::lostFocus(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::gotFocus(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMemoryWarning(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::deviceOrientationChanged(int newOrientation){
-    
+
 }
 
