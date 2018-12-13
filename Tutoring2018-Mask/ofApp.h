@@ -21,7 +21,6 @@ class ofApp : public ofxiOSApp {
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
     
-    ofPath path;
     ofImage img;
     ofFbo fbo;
 
