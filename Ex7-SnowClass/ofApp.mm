@@ -1,38 +1,32 @@
 #include "ofApp.h"
-
-//--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetBackgroundColor(0, 0, 255);
-    ofxAccelerometer.setup();
+    ofBackground(0, 0, 200);
+    ofSetCircleResolution(100);
+    coreMotion.setupAccelerometer();
 }
-
 //--------------------------------------------------------------
 void ofApp::update(){
-    for(int i=0;i<myTriangles.size();i++){
-        myTriangles[i].update();
+    coreMotion.update();
+    ofVec3f accel = coreMotion.getAccelerometerData();
+    for(int i=0;i<myFlakes.size();i++){
+        myFlakes[i].update(accel);
     }
-
 }
-
 //--------------------------------------------------------------
 void ofApp::draw(){
-    for(int i=0;i<myTriangles.size();i++){
-        myTriangles[i].draw();
+    for(int i=0;i<myFlakes.size();i++){
+        myFlakes[i].draw();
     }
 }
-
 //--------------------------------------------------------------
-void ofApp::exit(){
-
-}
-
+void ofApp::exit(){}
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
-    Triangle newTriangle;
-    newTriangle.setup(touch);
-    myTriangles.push_back(newTriangle);
+    Flake newFlake;
+    ofVec3f pos(touch.x,touch.y,0);
+    newFlake.setup(pos);
+    myFlakes.push_back(newFlake);
 }
-
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
 
@@ -72,4 +66,3 @@ void ofApp::gotMemoryWarning(){
 void ofApp::deviceOrientationChanged(int newOrientation){
 
 }
-

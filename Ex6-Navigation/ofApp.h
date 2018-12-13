@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofxiOS.h"
+#define NUM_IMAGES 3
 
-class ofApp : public ofxiOSApp{
+class ofApp : public ofxiOSApp {
 	
     public:
         void setup();
@@ -20,12 +21,11 @@ class ofApp : public ofxiOSApp{
         void gotFocus();
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
-    
-    ofImage img1, img2, img3;
-    ofRectangle btn1, btn2, btn3;
-    int section;
 
-
+    ofImage hkiPics[NUM_IMAGES];
+    ofRectangle buttons[NUM_IMAGES];
+    ofPoint buttonsPoint[NUM_IMAGES];
+    int currentPic;
 };
 
 

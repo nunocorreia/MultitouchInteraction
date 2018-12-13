@@ -1,9 +1,11 @@
 #pragma once
 
 #include "ofxiOS.h"
-#include "Triangle.h"
+#include "Flake.h"
+#include "ofxiOSCoreMotion.h"
 
-class ofApp : public ofxiOSApp{
+
+class ofApp : public ofxiOSApp {
 	
     public:
         void setup();
@@ -21,8 +23,10 @@ class ofApp : public ofxiOSApp{
         void gotFocus();
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
+    
+    ofxiOSCoreMotion coreMotion;
 
-    vector <Triangle> myTriangles;
+    vector <Flake> myFlakes;
 };
 
 

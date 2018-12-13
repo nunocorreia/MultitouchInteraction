@@ -2,35 +2,33 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetBackgroundColor(0, 0, 0);
-    myFont.load("Futura.ttc", 100);
-    myText="Touch";
+    ofBackground(0);
     centerX=ofGetWidth()/2;
     centerY=ofGetHeight()/2;
-    angleX=angleY=angleZ=0;
-    //start the accelerometer
-    ofxAccelerometer.setup();
+    myText="Multitouch Interaction";
+    angle.set(0,0,0);
+    myPrettyFont.load("Abel-Regular.ttf", 100);
+    //to use accelerometer values, you need to set up accelerometer
+    coreMotion.setupAccelerometer();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    angleX+=ofxAccelerometer.getForce().y;
-    angleY+=ofxAccelerometer.getForce().x;
-    angleZ++;
-    cout << ofGetFrameRate() << endl;
+    coreMotion.update();
+    ofVec3f accel = coreMotion.getAccelerometerData();
+    angle-=accel;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofSetColor(255, 0, 0);
-    ofPushMatrix();
-    ofTranslate(centerX,centerY);
-    ofRotateX(angleX);
-    ofRotateY(angleY);
-    //ofRotateZ(angleZ);
-    myFont.drawString(myText, -myFont.stringWidth(myText)/2,myFont.stringHeight(myText)/2);
-    ofPopMatrix();
-    ofDrawBitmapString(ofGetFrameRate(), 50, 50);
+        ofSetColor(255, 0, 0);
+        float myTextHalfWidth = myPrettyFont.stringWidth(myText)/2;
+        ofPushMatrix();
+        ofTranslate(centerX,centerY);
+        ofRotateXDeg(angle.y);
+        ofRotateYDeg(angle.x);
+        myPrettyFont.drawString(myText, 0-myTextHalfWidth, 0);
+        ofPopMatrix();
 }
 
 //--------------------------------------------------------------
